@@ -1,0 +1,169 @@
+
+{
+  "entities": {
+    "Alert": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Alert",
+      "type": "object",
+      "description": "Represents a vehicle alert or automated collision report.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the alert."
+        },
+        "driver_name": {
+          "type": "string",
+          "description": "Name of the driver sending the alert."
+        },
+        "sender_vehicle": {
+          "type": "string",
+          "description": "License plate or vehicle ID."
+        },
+        "message": {
+          "type": "string",
+          "description": "The alert message or automated status."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The timestamp of the event.",
+          "format": "date-time"
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who created the alert."
+        },
+        "latitude": {
+          "type": "number",
+          "description": "The latitude of the event."
+        },
+        "longitude": {
+          "type": "number",
+          "description": "The longitude of the event."
+        },
+        "impactForce": {
+          "type": "number",
+          "description": "The measured G-force during an impact event."
+        }
+      },
+      "required": [
+        "message",
+        "timestamp",
+        "userId"
+      ]
+    },
+    "UserProfile": {
+      "title": "User Profile",
+      "description": "Stores user profile information.",
+      "type": "object",
+      "properties": {
+        "driverName": {
+          "type": "string",
+          "description": "The name of the driver."
+        },
+        "vehicleNumber": {
+          "type": "string",
+          "description": "The vehicle's identification number."
+        }
+      },
+      "required": [
+        "driverName",
+        "vehicleNumber"
+      ]
+    },
+    "Note": {
+      "title": "Note",
+      "description": "A to-do item or note for a user.",
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "description": "The title of the note."
+        },
+        "description": {
+          "type": "string",
+          "description": "The detailed description of the note."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The timestamp when the note was created."
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the note/task is completed."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user who owns the note."
+        }
+      },
+      "required": [
+        "title",
+        "createdAt",
+        "completed",
+        "userId"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/alerts/{alertId}",
+        "definition": {
+          "entityName": "Alert",
+          "schema": {
+            "$ref": "#/backend/entities/Alert"
+          },
+          "description": "Collection of vehicle alerts and collision detections.",
+          "params": [
+            {
+              "name": "alertId",
+              "description": "Unique identifier for the alert."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The user's unique ID."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/notes/{noteId}",
+        "definition": {
+          "entityName": "Note",
+          "schema": {
+            "$ref": "#/backend/entities/Note"
+          },
+          "description": "A collection of notes for each user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The user's unique ID."
+            },
+            {
+              "name": "noteId",
+              "description": "Unique identifier for the note."
+            }
+          ]
+        }
+      }
+    ]
+  }
+}
